@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dropbox API Example</title>  
+    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+    <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="4he6dpfw888my33"></script> 
+  </head>
+  <body>
+    <button id='btn'>Choose File</button>
+    <br>
+    <p><b>Your image: </b></p>
+    <br>
+    <img id="image">
+    <script>
+    var button = document.getElementById('btn');
+    button.addEventListener('click', function() {
+    console.log("clicked");
+    Dropbox.choose({
+    linkType: 'direct',
+    extensions: ['.jpg', '.jpeg', '.png'],
+    success: function(files) {
+      var imageURL = files[0].link;
+      var img = document.createElement('img');
+      img.src = imageURL;
+      document.body.appendChild(img);
+    }
+  });
+});
+</script>
+</body>
+</html>
