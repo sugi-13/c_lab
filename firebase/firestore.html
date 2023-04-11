@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database_Firestore</title>
+</head>
+<body>
+    <p><b>Enter your details</b></p>
+    <input type="text" placeholder="Name" id="name">
+    <br><br>
+    <input type="text" placeholder="Subject" id="subject">
+    <br><br>
+    <button type="button" id="add">Add data</button>
+    <p><b>To update or delete your record pass your id also here</b></p>
+    <br>
+    <input type="text" placeholder="ID" id="id">
+    <button type="button" id="update">update data</button>
+    <button type="button" id="del">delete data</button>
+    <br><br>
+    <div id="data">
+    </div>
+    
+</body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+  import { getFirestore,doc,collection,addDoc,getDocs,updateDoc,deleteDoc } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyA5BMbCq8vRnEaGa3WWvTIA88H0YSW8uOI",
+    authDomain: "newclabdemo.firebaseapp.com",
+    projectId: "newclabdemo",
+    storageBucket: "newclabdemo.appspot.com",
+    messagingSenderId: "457549967941",
+    appId: "1:457549967941:web:9713abe34ac5a1dec4692c"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  add.addEventListener('click',(e)=>{
+    var name = document.getElementById('name').value;
+    var subject = document.getElementById('subject').value;
+    addDoc(collection(db,"students"),{
+        name:name,
+        subject:subject
+    }).then(()=>alert("data added!")).catch(()=>alert("some error"));
+    });
+
+    getDocs(collection(db,"students")).then((snap) => {
+        let users = [];
+        snap.forEach((doc) => {
+            users.push({...doc.data(), id: doc.id});
+        });
+    console.log("all data fetched");
+    console.log(users);
+    // Convert the users array to JSON
+    const usersJson = JSON.stringify(users);
+    // Set the innerHTML of an HTML element with id="data" to the users JSON
+    document.getElementById("data").textContent = usersJson;
+    }).catch((error) => {
+        console.error("Error getting documents: ", error);
+    });
+
+    update.addEventListener('click',(e)=>{
+    var name = document.getElementById('name').value;
+    var subject = document.getElementById('subject').value;
+    var id = document.getElementById('id').value;
+    updateDoc(doc(db,"students",id),{
+        name:name,
+        subject:subject
+    }).then(()=>alert("data updated!")).catch(()=>alert("some error"));
+    });
+
+    del.addEventListener('click',(e)=>{
+        var id = document.getElementById('id').value;
+        deleteDoc(doc(db,"students",id)).then(()=>alert("data deleted")).catch(e=>console.log(e));
+    });
+
+</script>
+</html>

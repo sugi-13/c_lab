@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="file1">
+    <img id="img2" alt="stoageImg">
+    <button type="button" id="pbtn">Select photo</button>
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+    import { getStorage,ref,getDownloadURL,uploadBytes } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+    apiKey: "AIzaSyA5BMbCq8vRnEaGa3WWvTIA88H0YSW8uOI",
+    authDomain: "newclabdemo.firebaseapp.com",
+    projectId: "newclabdemo",
+    storageBucket: "newclabdemo.appspot.com",
+    messagingSenderId: "457549967941",
+    appId: "1:457549967941:web:9713abe34ac5a1dec4692c"
+  };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const storage=getStorage(app);
+    
+    pbtn.addEventListener('click',(e)=>{
+    var file=document.querySelector('#file1').files[0];
+    var storagerf =ref(storage,"ak2");
+    uploadBytes(storagerf,file).then((snapchat)=>console.log("file uploaded"));
+    });
+
+    var storagerf =ref(storage,"ak2");
+    getDownloadURL(storagerf).then((url)=>{
+        document.getElementById('img2').src=url;
+    }).catch(err=>alert(err));
+</script>
+</html>
